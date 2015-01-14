@@ -19,9 +19,13 @@ if (!fs.existsSync(filePath)) {
 var zip = new AdmZip(filePath);
 var zipEntries = zip.getEntries();
 zipEntries.forEach(function(val) {
-	if (val.entryName.indexOf("content.xml") >= 0 || val.entryName.indexOf("Pictures") >=0 ) {
+	if (val.entryName.indexOf("content.xml") >= 0) {
 		console.log(val.entryName);
 		zip.extractEntryTo(val, "target/", true, true);
+	}
+	if (val.entryName.indexOf("Pictures") >=0 ) {
+		console.log(val.entryName);
+		zip.extractEntryTo(val, "target/ressources/images/", false, true);
 	}
 })
 
@@ -41,7 +45,7 @@ function MDWriter() {
 	}
 
 	this.addImage = function(path) {
-		this.text+="\n\n![]("+path+")\n";
+		this.text+="\n\n![](ressources/images/"+path.replace("Pictures/", "")+")\n";
 	}
 
 	this.addBullet = function() {
@@ -71,7 +75,7 @@ saxStream.on("opentag", function(node) {
 	} else if (node.name ==="draw:image") {
 		mdWriter.addImage(node.attributes["xlink:href"]);
 	} else if (node.name === "text:list-item") {
-		mdWriter.addBullet();	
+		mdWriter.addBullet();
 	}
 });
 
