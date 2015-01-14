@@ -10,7 +10,7 @@ if (!argv["f"]) {
 }
 
 var filePath =argv["f"];
-git 
+
 if (!fs.existsSync(filePath)) {
 	console.log("file not found", filePath);
 	process.exit(1);
@@ -21,21 +21,19 @@ var zipEntries = zip.getEntries();
 zipEntries.forEach(function(val) {
 	if (val.entryName.indexOf("content.xml") >= 0 || val.entryName.indexOf("Pictures") >=0 ) {
 		console.log(val.entryName);
-		zip.extractEntryTo(val, ".tmp/", true, true);
+		zip.extractEntryTo(val, "target/", true, true);
 	}
 })
-//return;
-//zip.extractEntryTo("content.xml", ".tmp/", true, true);
 
 function MDWriter() {
 	this.text = "";
 
 	this.addPage = function() {
-		this.text+= "\n\n****\n\n";
+		this.text+= "\n\n\n\n\n## ";
 	}
 
 	this.addParagraph = function() {
-		this.text+= "\n";
+		this.text+= "\n\n";
 	}
 
 	this.addText = function(text) {	
@@ -43,8 +41,13 @@ function MDWriter() {
 	}
 
 	this.addImage = function(path) {
-		this.text+="\n![]("+path+")\n";
+		this.text+="\n\n![]("+path+")\n";
 	}
+
+	this.addBullet = function() {
+		this.text+="\n - ";
+	}
+
 }
 
 var mdWriter = new MDWriter();
@@ -58,23 +61,24 @@ var saxStream = sax.createStream(true, {
 
 saxStream.on("opentag", function(node) {
 	//console.log(node.name);
-	if (node.name === "text:p") {
-		mdWriter.addParagraph();
-	} else if (node.name === "draw:page") {
+
+	if (node.name === "draw:page") {
 		mdWriter.addPage();
 	} else if (node.name ==="draw:image") {
 		mdWriter.addImage(node.attributes["xlink:href"]);
+	} else if (node.name === "text:list-item") {
+		mdWriter.addBullet();	
 	}
 });
 
 saxStream.on("end", function() {
 	//console.log(mdWriter.text);
-	fs.writeFile(".tmp/content.md", mdWriter.text);
+	fs.writeFile("target/content.md", mdWriter.text);
 });
 
 saxStream.on("text", function(t) {
     mdWriter.addText(t);
 });
 
-fs.createReadStream(".tmp/content.xml").pipe(saxStream);
+fs.createReadStream("target/content.xml").pipe(saxStream);
 
