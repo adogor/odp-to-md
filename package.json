@@ -1,0 +1,12 @@
+{
+  "name": "odp-to_md",
+  "version": "0.0.0",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "dependencies": {
+    "adm-zip": "^0.4.4",
+    "minimist": "^1.1.0",
+    "sax": "^0.6.1"
+  }
+}
