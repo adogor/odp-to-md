@@ -26,10 +26,10 @@ zipEntries.forEach(function(val) {
 })
 
 function MDWriter() {
-	this.text = "";
+	this.text = "# TITRE\n\n<!-- .slide: data-background=\"reveal/theme-zenika/images/title-background.png\" -->";
 
 	this.addPage = function() {
-		this.text+= "\n\n\n\n\n## ";
+		this.text+= "\n\n\n\n## ";
 	}
 
 	this.addParagraph = function() {
@@ -46,6 +46,10 @@ function MDWriter() {
 
 	this.addBullet = function() {
 		this.text+="\n - ";
+	}
+
+	this.addEnd = function() {
+		this.text+="\n\n\n\n<!-- .slide: data-background=\"reveal/theme-zenika/images/tp1.png\" -->\n\n\n\n<!-- .slide: data-background=\"reveal/theme-zenika/images/tp1.png\" -->\n<!-- .slide: data-background-size=\"30%\" -->";
 	}
 
 }
@@ -73,6 +77,7 @@ saxStream.on("opentag", function(node) {
 
 saxStream.on("end", function() {
 	//console.log(mdWriter.text);
+	mdWriter.addEnd();
 	fs.writeFile("target/content.md", mdWriter.text);
 });
 
