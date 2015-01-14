@@ -5,12 +5,12 @@ var AdmZip = require('adm-zip');
 var argv = require('minimist')(process.argv.slice(2));
 
 if (!argv["f"]) {
-	console.log("no file");
+	console.log("no file, use -f argument");
 	process.exit(1);
 }
 
 var filePath =argv["f"];
-
+git 
 if (!fs.existsSync(filePath)) {
 	console.log("file not found", filePath);
 	process.exit(1);
