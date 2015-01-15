@@ -77,12 +77,12 @@ function MDWriter() {
     };
 
     this.startCodeBlock = function () {
-        this.text += "\n```\n";
+        this.text += "\n\n```\n";
         this.inCodeBlock = true;
     };
 
     this.endCodeBlock = function () {
-        this.text += "\n```\n";
+        this.text += "\n```\n\n";
         this.inCodeBlock = false;
     };
 
