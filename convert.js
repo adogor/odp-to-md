@@ -165,6 +165,7 @@ function OdpConverter(filepath, outDir) {
 }
 
 if(inDir) {
+    var outSlidesJson = [];
     _.forEach(
         _.filter(
             fs.readdirSync(inDir),
@@ -174,10 +175,12 @@ if(inDir) {
         ),
         function (odp) {
             var conv = new OdpConverter(path.join(inDir, odp), outDir);
+            outSlidesJson.push(conv.name + '.md');
             conv.extract();
             conv.convert();
         }
     );
+    fs.writeFile(path.join(outDir, 'slides.json'), JSON.stringify(outSlidesJson));
 } else {
     var conv = new OdpConverter(inFile, outDir);
     conv.extract();
