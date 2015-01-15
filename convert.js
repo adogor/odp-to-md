@@ -33,9 +33,11 @@ function MDWriter() {
     this.text = "# TITRE\n\n<!-- .slide: class=\"page-title\" -->";
     this.inCodeBlock = false;
     this.listLevel = 0;
+    this.titreAdded = false;
 
     this.addPage = function() {
-        this.text += "\n\n\n\n## ";
+        this.text += "\n\n\n\n";
+        this.titreAdded = false;
     }
 
     this.addParagraph = function() {
@@ -45,7 +47,13 @@ function MDWriter() {
     }
 
     this.addText = function(text) {
-        this.text += text;
+    	if (!this.titreAdded) {
+    		 this.text += "## " + text + "\n";
+    		 this.titreAdded = true;
+    	}
+    	else {
+			this.text += text;
+    	}
     }
 
     this.addImage = function(path) {
