@@ -30,7 +30,7 @@ zipEntries.forEach(function(val) {
 })
 
 function MDWriter() {
-	this.text = "# TITRE\n\n<!-- .slide: data-background=\"reveal/theme-zenika/images/title-background.png\" -->";
+	this.text = "# TITRE\n\n<!-- .slide: class=\"page-title\" -->";
 
 	this.addPage = function() {
 		this.text+= "\n\n\n\n## ";
@@ -53,7 +53,7 @@ function MDWriter() {
 	}
 
 	this.addEnd = function() {
-		this.text+="\n\n\n\n<!-- .slide: data-background=\"reveal/theme-zenika/images/tp1.png\" -->\n\n\n\n<!-- .slide: data-background=\"reveal/theme-zenika/images/tp1.png\" -->\n<!-- .slide: data-background-size=\"30%\" -->";
+		this.text+="\n\n\n\n<!-- .slide: class=\"page-questions\" -->\n\n\n\n<!-- .slide: class=\"page-tp1\" -->";
 	}
 
 }
