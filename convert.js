@@ -86,6 +86,10 @@ function MDWriter() {
         this.inCodeBlock = false;
     };
 
+    this.addNotes = function () {
+        this.text += "\n\nNotes :\n\n";
+    };
+
 }
 
 function OdpConverter(filepath, outDir) {
@@ -138,6 +142,8 @@ function OdpConverter(filepath, outDir) {
                 mdWriter.startCodeBlock();
             } else if (node.name === "text:p") {
                 mdWriter.addParagraph();
+            } else if (node.name === "presentation:notes") {
+                mdWriter.addNotes();
             }
         });
 
