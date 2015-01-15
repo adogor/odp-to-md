@@ -11,7 +11,7 @@ if (!argv['d'] && !argv['f']) {
     process.exit(1);
 }
 
-var outDir = 'target';
+var outDir = argv['o'] || 'target';
 var imgDir = 'ressources/images';
 
 var inDir = argv["d"];
@@ -27,14 +27,17 @@ if (!inDir && !fs.existsSync(inFile)) {
 }
 
 function MDWriter() {
-    this.text = "# TITRE\n\n<!-- .slide: class=\"page-title\" -->";
+    this.text = "";
     this.inCodeBlock = false;
     this.listLevel = 0;
     this.titreAdded = false;
+    this.mainTitleAdded = false;
+    this.firstPage = false;
 
     this.addPage = function () {
         this.text += "\n\n\n\n";
         this.titreAdded = false;
+        this.firstPage = true;
     };
 
     this.addParagraph = function () {
@@ -44,7 +47,11 @@ function MDWriter() {
     };
 
     this.addText = function (text) {
-        if (!this.titreAdded) {
+        if(this.firstPage && !this.mainTitleAdded) {
+            this.text = '#' + text + '\n\n<!-- .slide: class="page-title" -->\n\n\n\n';
+            this.mainTitleAdded = true;
+        }
+        else if (!this.titreAdded) {
             this.text += "## " + text + "\n";
             this.titreAdded = true;
         }
@@ -133,7 +140,7 @@ function OdpConverter(filepath, outDir) {
             if (node.name === "draw:page") {
                 mdWriter.addPage();
             } else if (node.name === "draw:image") {
-                mdWriter.addImage(node.attributes["xlink:href"]);
+                mdWriter.addImage(outName + '-' + node.attributes["xlink:href"]);
             } else if (node.name === "text:list") {
                 mdWriter.startList();
             } else if (node.name === "text:list-item") {
@@ -186,7 +193,7 @@ if(inDir) {
             conv.convert();
         }
     );
-    fs.writeFile(path.join(outDir, 'slides.json'), JSON.stringify(outSlidesJson));
+    fs.writeFile(path.join(outDir, 'slides.json'), JSON.stringify(outSlidesJson, null, 2));
 } else {
     var conv = new OdpConverter(inFile, outDir);
     conv.extract();
