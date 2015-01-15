@@ -11,7 +11,7 @@ if (!argv['d'] && !argv['f']) {
     process.exit(1);
 }
 
-var outDir = 'target';
+var outDir = argv['o'] || 'target';
 var imgDir = 'ressources/images';
 
 var inDir = argv["d"];
