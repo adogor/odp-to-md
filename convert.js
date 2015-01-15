@@ -47,13 +47,12 @@ function MDWriter() {
     }
 
     this.addText = function(text) {
-    	if (!this.titreAdded) {
-    		 this.text += "## " + text + "\n";
-    		 this.titreAdded = true;
-    	}
-    	else {
-			this.text += text;
-    	}
+        if (!this.titreAdded) {
+            this.text += "## " + text + "\n";
+            this.titreAdded = true;
+        } else {
+            this.text += text;
+        }
     }
 
     this.addImage = function(path) {
@@ -89,6 +88,32 @@ function MDWriter() {
         this.inCodeBlock = false;
     }
 
+    this.startTable = function() {
+        this.inTable = true;
+        this.rowNumber = 0;
+        this.colNumber = 0;
+    }
+
+    this.endTable = function() {
+        this.inTable = false;
+    }
+
+    this.startRow = function() {
+        this.text += "\n|";
+        if (this.rowNumber == 1) {
+            //If header was written we write separation line
+            this.text += Array(this.colNumber + 1).join("---|") + "\n|";
+        }
+        this.rowNumber++;
+    }
+
+    this.closeCell = function() {
+        if (this.rowNumber == 1) {
+            this.colNumber++;
+        }
+        this.text += "|";
+    }
+
 }
 
 var mdWriter = new MDWriter();
@@ -115,7 +140,13 @@ saxStream.on("opentag", function(node) {
         mdWriter.startCodeBlock();
     } else if (node.name === "text:p") {
         mdWriter.addParagraph();
+    } else if (node.name === "table:table") {
+        mdWriter.startTable();
+    } else if (node.name === "table:table-row") {
+        mdWriter.startRow();
     }
+
+
 });
 
 saxStream.on("closetag", function(node) {
@@ -125,6 +156,10 @@ saxStream.on("closetag", function(node) {
         mdWriter.endCodeBlock();
     } else if (node === "text:list") {
         mdWriter.endList();
+    } else if (node === "table:table") {
+        mdWriter.endTable();
+    } else if (node === "table:table-cell") {
+        mdWriter.closeCell();
     }
 });
 
