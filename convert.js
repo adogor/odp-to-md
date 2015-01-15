@@ -29,6 +29,7 @@ if (!inDir && !fs.existsSync(inFile)) {
 function MDWriter() {
     this.text = "";
     this.inCodeBlock = false;
+    this.inNotes = false;
     this.listLevel = 0;
     this.titreAdded = false;
     this.mainTitleAdded = false;
@@ -41,7 +42,7 @@ function MDWriter() {
     };
 
     this.addParagraph = function () {
-        if (this.inCodeBlock) {
+        if (this.inCodeBlock || this.inNotes) {
             this.text += "\n";
         }
     };
@@ -84,17 +85,22 @@ function MDWriter() {
     };
 
     this.startCodeBlock = function () {
-        this.text += "\n\n```\n";
+        this.text += "\n```";
         this.inCodeBlock = true;
     };
 
     this.endCodeBlock = function () {
-        this.text += "\n```\n\n";
+        this.text += "\n```\n";
         this.inCodeBlock = false;
     };
 
-    this.addNotes = function () {
-        this.text += "\n\nNotes :\n\n";
+    this.startNotes = function () {
+        this.text += "\nNotes :\n";
+        this.inNotes = true;
+    };
+
+    this.endNotes = function () {
+        this.inNotes = false;
     };
 
 }
@@ -150,7 +156,7 @@ function OdpConverter(filepath, outDir) {
             } else if (node.name === "text:p") {
                 mdWriter.addParagraph();
             } else if (node.name === "presentation:notes") {
-                mdWriter.addNotes();
+                mdWriter.startNotes();
             }
         });
 
@@ -160,6 +166,8 @@ function OdpConverter(filepath, outDir) {
                 mdWriter.endCodeBlock();
             } else if (node === "text:list") {
                 mdWriter.endList();
+            } else if (node === "presentation:notes") {
+                mdWriter.endNotes();
             }
         });
 
