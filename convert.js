@@ -27,14 +27,17 @@ if (!inDir && !fs.existsSync(inFile)) {
 }
 
 function MDWriter() {
-    this.text = "# TITRE\n\n<!-- .slide: class=\"page-title\" -->";
+    this.text = "";
     this.inCodeBlock = false;
     this.listLevel = 0;
     this.titreAdded = false;
+    this.mainTitleAdded = false;
+    this.firstPage = false;
 
     this.addPage = function () {
         this.text += "\n\n\n\n";
         this.titreAdded = false;
+        this.firstPage = true;
     };
 
     this.addParagraph = function () {
@@ -44,7 +47,11 @@ function MDWriter() {
     };
 
     this.addText = function (text) {
-        if (!this.titreAdded) {
+        if(this.firstPage && !this.mainTitleAdded) {
+            this.text = '#' + text + '\n\n<!-- .slide: class="page-title" -->\n\n\n\n';
+            this.mainTitleAdded = true;
+        }
+        else if (!this.titreAdded) {
             this.text += "## " + text + "\n";
             this.titreAdded = true;
         }
