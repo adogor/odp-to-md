@@ -1,4 +1,5 @@
 var fs = require('fs');
+var path = require('path');
 var sax = require("sax");
 var AdmZip = require('adm-zip');
 
@@ -16,6 +17,7 @@ if (!fs.existsSync(filePath)) {
     process.exit(1);
 }
 
+var name = path.basename(filePath, '.odp');
 var zip = new AdmZip(filePath);
 var zipEntries = zip.getEntries();
 zipEntries.forEach(function(val) {
@@ -131,7 +133,7 @@ saxStream.on("closetag", function(node) {
 saxStream.on("end", function() {
     //console.log(mdWriter.text);
     mdWriter.addEnd();
-    fs.writeFile("target/content.md", mdWriter.text);
+    fs.writeFile('target/' + name + '.md', mdWriter.text);
 });
 
 saxStream.on("text", function(t) {
