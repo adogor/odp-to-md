@@ -31,13 +31,16 @@ zipEntries.forEach(function(val) {
 
 function MDWriter() {
 	this.text = "# TITRE\n\n<!-- .slide: class=\"page-title\" -->";
+	this.inCodeBlock = false;
 
 	this.addPage = function() {
 		this.text+= "\n\n\n\n## ";
 	}
 
 	this.addParagraph = function() {
-		this.text+= "\n\n";
+		if (this.inCodeBlock) {
+			this.text+= "\n";	
+		}
 	}
 
 	this.addText = function(text) {	
@@ -54,6 +57,16 @@ function MDWriter() {
 
 	this.addEnd = function() {
 		this.text+="\n\n\n\n<!-- .slide: class=\"page-questions\" -->\n\n\n\n<!-- .slide: class=\"page-tp1\" -->";
+	}
+
+	this.startCodeBlock = function() {
+		this.text+="\n```\n";
+		this.inCodeBlock = true;
+	}
+
+	this.endCodeBlock = function() {
+		this.text+="\n```\n";
+		this.inCodeBlock = false;
 	}
 
 }
@@ -76,7 +89,19 @@ saxStream.on("opentag", function(node) {
 		mdWriter.addImage(node.attributes["xlink:href"]);
 	} else if (node.name === "text:list-item") {
 		mdWriter.addBullet();
+	} else if (node.name === "draw:custom-shape") {
+		mdWriter.startCodeBlock();
+	} else if (node.name === "text:p") {
+		mdWriter.addParagraph();
 	}
+});
+
+saxStream.on("closetag", function(node) {
+	//console.log(node);
+
+	if (node === "draw:custom-shape") {
+		mdWriter.endCodeBlock();
+	} 
 });
 
 saxStream.on("end", function() {
