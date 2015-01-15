@@ -136,7 +136,7 @@ function OdpConverter(filepath, outDir) {
             if (node.name === "draw:page") {
                 mdWriter.addPage();
             } else if (node.name === "draw:image") {
-                mdWriter.addImage(node.attributes["xlink:href"]);
+                mdWriter.addImage(outName + '-' + node.attributes["xlink:href"]);
             } else if (node.name === "text:list") {
                 mdWriter.startList();
             } else if (node.name === "text:list-item") {
