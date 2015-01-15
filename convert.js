@@ -180,7 +180,7 @@ if(inDir) {
             conv.convert();
         }
     );
-    fs.writeFile(path.join(outDir, 'slides.json'), JSON.stringify(outSlidesJson));
+    fs.writeFile(path.join(outDir, 'slides.json'), JSON.stringify(outSlidesJson, null, 2));
 } else {
     var conv = new OdpConverter(inFile, outDir);
     conv.extract();
