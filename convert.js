@@ -111,7 +111,7 @@ saxStream.on("opentag", function(node) {
         mdWriter.startList();
     } else if (node.name === "text:list-item") {
         mdWriter.addBullet();
-    } else if (node.name === "draw:custom-shape") {
+    } else if (node.name === "draw:custom-shape" || node.name === "draw:rect") {
         mdWriter.startCodeBlock();
     } else if (node.name === "text:p") {
         mdWriter.addParagraph();
@@ -121,7 +121,7 @@ saxStream.on("opentag", function(node) {
 saxStream.on("closetag", function(node) {
     //console.log(node);
 
-    if (node === "draw:custom-shape") {
+    if (node === "draw:custom-shape" || node === "draw:rect") {
         mdWriter.endCodeBlock();
     } else if (node === "text:list") {
         mdWriter.endList();
