@@ -103,6 +103,33 @@ function MDWriter() {
         this.inNotes = false;
     };
 
+
+    this.startTable = function() {
+        this.inTable = true;
+        this.rowNumber = 0;
+        this.colNumber = 0;
+    }
+
+    this.endTable = function() {
+        this.inTable = false;
+    }
+
+    this.startRow = function() {
+        this.text += "\n|";
+        if (this.rowNumber == 1) {
+            //If header was written we write separation line
+            this.text += Array(this.colNumber + 1).join("---|") + "\n|";
+        }
+        this.rowNumber++;
+    }
+
+    this.closeCell = function() {
+        if (this.rowNumber == 1) {
+            this.colNumber++;
+        }
+        this.text += "|";
+    }
+
 }
 
 function OdpConverter(filepath, outDir) {
@@ -157,6 +184,10 @@ function OdpConverter(filepath, outDir) {
                 mdWriter.addParagraph();
             } else if (node.name === "presentation:notes") {
                 mdWriter.startNotes();
+            } else if (node.name === "table:table") {
+                mdWriter.startTable();
+            } else if (node.name === "table:table-row") {
+                mdWriter.startRow();
             }
         });
 
@@ -168,6 +199,10 @@ function OdpConverter(filepath, outDir) {
                 mdWriter.endList();
             } else if (node === "presentation:notes") {
                 mdWriter.endNotes();
+            } else if (node === "table:table") {
+                mdWriter.endTable();
+            } else if (node === "table:table-cell") {
+                mdWriter.closeCell();
             }
         });
 
