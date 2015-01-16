@@ -11,7 +11,7 @@
 - [x] Slide de TP à la fin
 - [x] Images dans *ressources/images*
 - [x] Bloc de code 
-- [x] Tableaux
+- [x] Tableaux 
 
 # Attention
 
