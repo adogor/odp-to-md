@@ -67,6 +67,9 @@ function MDWriter() {
 
     this.startList = function () {
         this.listLevel++;
+        if (this.listLevel == 1 && this.text[this.text.length-1] !== '\n') {
+            this.text += '\n';
+        }
     };
 
     this.endList = function () {
