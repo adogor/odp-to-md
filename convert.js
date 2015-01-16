@@ -88,6 +88,11 @@ function MDWriter() {
     };
 
     this.startCodeBlock = function () {
+        this.tmp = this.text;
+        this.text = "";
+        if (this.tmp[this.tmp.length-1] !== '\n') {
+            this.text += "\n";
+        }
         this.text += "\n```";
         this.inCodeBlock = true;
     };
@@ -95,6 +100,9 @@ function MDWriter() {
     this.endCodeBlock = function () {
         this.text += "\n```\n";
         this.inCodeBlock = false;
+        var codeBlock = this.text;
+        this.text = this.tmp;
+        this.text += codeBlock.replace(/\n{3}/g,"\n\n");
     };
 
     this.startNotes = function () {
