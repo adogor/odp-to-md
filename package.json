@@ -9,5 +9,8 @@
     "lodash": "^2.4.1",
     "minimist": "^1.1.0",
     "sax": "^0.6.1"
+  },
+  "bin" : {
+    "mdconvert" : "convert.js"
   }
 }
