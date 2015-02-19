@@ -3,20 +3,22 @@
 # Installation
 
   Il est possible d'installer en global avec la commande:
+  
     npm install -g
+    
   l'exécutable mdconvert est alors disponible partout
 
 
 # Lancement du script 
-
-    node mdconvert.js OU mdconvert si installé en global
+```
+node mdconvert.js OU mdconvert si installé en global
 
 OPTIONS :
     -f FICHIER.odp
     -d répertoire avec odp (par défaut répertoire courant)
     -o répertoire de sortie (par défaut target)
     -h, --help : aide/usage
-
+```
 
 
 # Conversion
