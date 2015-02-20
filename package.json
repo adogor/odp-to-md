@@ -1,13 +1,17 @@
 {
   "name": "odp-to_md",
-  "version": "0.0.0",
+  "version": "0.2.0",
   "engines": {
     "node": ">=0.10.0"
   },
   "dependencies": {
     "adm-zip": "^0.4.4",
+    "bluebird": "^2.9.10",
     "lodash": "^2.4.1",
     "minimist": "^1.1.0",
     "sax": "^0.6.1"
+  },
+  "bin": {
+    "mdconvert": "mdconvert.js"
   }
 }
