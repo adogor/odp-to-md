@@ -22,6 +22,8 @@ var outDir = argv['o'] || 'target';
 var inDir = argv["d"] || process.cwd();
 var inFile = argv["f"];
 
+var splitFiles = !!argv["s"];
+
 if (inFile && !fs.existsSync(inFile)) {
     console.log("file not found", inFile);
     process.exit(1);
@@ -49,7 +51,7 @@ if (!inFile) {
 
         Promise.all(_.map(filteredFiles,
             function(odp, index) {
-                return converter.convert(path.join(inDir, odp), outDir).then(function(fileNames) {
+                return converter.convert(path.join(inDir, odp), outDir, splitFiles).then(function(fileNames) {
                     return fileNames;
                 })
             }
@@ -58,7 +60,7 @@ if (!inFile) {
         }).then(writeSlides);
     });
 } else {
-    converter.convert(inFile, outDir).then(writeSlides)
+    converter.convert(inFile, outDir, splitFiles).then(writeSlides)
 }
 
 function writeSlides(pages) {

@@ -1,5 +1,9 @@
 # odp-to-md
 
+# Description
+
+Conversion de fichiers ODP et ODT en markdown.
+
 # Installation
 
   Il est possible d'installer en global avec la commande:
@@ -14,21 +18,13 @@
 node mdconvert.js OU mdconvert si installé en global
 
 OPTIONS :
-    -f FICHIER.odp
+    -f FICHIER.odp ou odt
     -d répertoire avec odp (par défaut répertoire courant)
     -o répertoire de sortie (par défaut target)
     -h, --help : aide/usage
+    -s, split: 1 fichier par chapitre niveau 1
 ```
 
-
-# Conversion
-
-- [x] Slide du titre
-- [x] Liste à puces
-- [x] Slide de TP à la fin
-- [x] Images dans *ressources/images*
-- [x] Bloc de code 
-- [x] Tableaux 
 
 # Attention
 

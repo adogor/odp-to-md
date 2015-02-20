@@ -1,6 +1,6 @@
 {
   "name": "odp-to_md",
-  "version": "0.0.0",
+  "version": "0.2.0",
   "engines": {
     "node": ">=0.10.0"
   },
@@ -12,6 +12,6 @@
     "sax": "^0.6.1"
   },
   "bin": {
-    "mdconvert": "convert.js"
+    "mdconvert": "mdconvert.js"
   }
 }
